@@ -14,7 +14,7 @@ public class Main {
             BufferedImage bufferedImage = ImageIO.read(imageFile);
 
             //1.
-            int k = 7;
+            int k = 3;
             List<Color> colors = findRandomColorsInImage(bufferedImage, k);
             System.out.println(colors);
 
@@ -31,12 +31,23 @@ public class Main {
             }
 
             //3.
+//            BufferedImage newBufferedImage = changeImageWithGroupList(bufferedImage, groupList);
+//            File newFile = new File("./out.png");
+//            ImageIO.write(newBufferedImage, "png", newFile);
+
+            //4.
+            while (!newColors.equals(colors)){
+                colors = newColors;
+                groupList = getClosestColors(bufferedImage,colors);
+//            System.out.println(groupList);
+                //Faire une nouvelle liste de couleurs avec la moyenne dans chaque groupe
+                newColors = findMedianColors(bufferedImage,groupList, colors);
+                System.out.println(newColors);
+            }
+
             BufferedImage newBufferedImage = changeImageWithGroupList(bufferedImage, groupList);
             File newFile = new File("./out.png");
             ImageIO.write(newBufferedImage, "png", newFile);
-
-
-            
 
 
         } catch (IOException e) {
@@ -97,8 +108,8 @@ public class Main {
         }
 //        float bestDistance = distanceBetween2Colors(new Color(bufferedImage.getRGB(0,0)), colors.get(0));
 
-        System.out.println("height " + bufferedImage.getHeight());
-        System.out.println("width " + bufferedImage.getWidth());
+//        System.out.println("height " + bufferedImage.getHeight());
+//        System.out.println("width " + bufferedImage.getWidth());
 
         for (int i = 0; i < bufferedImage.getWidth(); i++) {
             for (int j = 0; j < bufferedImage.getHeight(); j++) {
