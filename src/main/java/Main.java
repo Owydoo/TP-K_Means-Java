@@ -14,7 +14,7 @@ public class Main {
             BufferedImage bufferedImage = ImageIO.read(imageFile);
 
             //1.
-            int k = 3;
+            int k = 7;
             List<Color> colors = findRandomColorsInImage(bufferedImage, k);
             System.out.println(colors);
 
@@ -29,10 +29,13 @@ public class Main {
             for (int i = 0; i < groupList.getColorGroupList().size(); i++) {
                 groupList.getColorGroupList().get(i).setColor(newColors.get(i));
             }
-            
+
+            //3.
             BufferedImage newBufferedImage = changeImageWithGroupList(bufferedImage, groupList);
             File newFile = new File("./out.png");
             ImageIO.write(newBufferedImage, "png", newFile);
+
+
             
 
 
@@ -69,14 +72,18 @@ public class Main {
     }
 
     private static Color findMedianColor(BufferedImage bufferedImage, ColorGroup colorGroupFromColor, Color color) {
-        int total = 0;
+        int totalR = 0;
+        int totalG = 0;
+        int totalB = 0;
         int size = colorGroupFromColor.getCoords().size();
         for (int i = 0; i < size; i++) {
             Coord coord = colorGroupFromColor.getCoords().get(i);
-            total += bufferedImage.getRGB(coord.getX(),
-                    coord.getY() );
+            Color currColor = new Color(bufferedImage.getRGB(coord.getX(), coord.getY()));
+            totalR += currColor.getRed();
+            totalG += currColor.getGreen();
+            totalB += currColor.getBlue();
         }
-        return new Color(total / size);
+        return new Color(totalR / size, totalG / size, totalB / size);
     }
 
 
@@ -105,18 +112,6 @@ public class Main {
     }
 
     private static Color closestColorForPixel(Color color, List<Color> colors) {
-        //        int best_color(Vec3f bgr, vector<Vec3f> colors) {
-//            float bestDistance = distance_color_l2(bgr, colors[0]);
-//            int bestIndex = 0;
-//            for (int i = 1; i < colors.size(); ++i) {
-//                float distance = distance_color_l2(bgr, colors[i]);
-//                if (distance < bestDistance) {
-//                    bestDistance = distance;
-//                    bestIndex = i;
-//                }
-//            }
-//            return bestIndex;
-//        }
         float bestDistance = distanceBetween2Colors(color, colors.get(0));
         int bestIndex = 0;
         for (int i = 1; i < colors.size(); i++) {
