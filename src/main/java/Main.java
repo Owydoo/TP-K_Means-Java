@@ -45,15 +45,14 @@ public class Main {
                 System.out.println(newColors);
             }
 
+            //5.
             BufferedImage newBufferedImage = changeImageWithGroupList(bufferedImage, groupList);
             File newFile = new File("./out.png");
             ImageIO.write(newBufferedImage, "png", newFile);
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("yo");
     }
 
     private static BufferedImage changeImageWithGroupList(BufferedImage bufferedImage, GroupList groupList) {
